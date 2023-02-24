@@ -1,0 +1,16 @@
+[package]
+name = "tornadoMoniter"
+version = "0.1.0"
+authors = ["yiweichi <yiweichi1@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ethers = "1.0.2"
+hex = "0.4"
+web3 = '0.18.0'
+tokio = { version = "1", features = ["full"] }
+dotenv = "0.15.0"
+arrayref = "0.3.6"
+mongodb = "2.3.1"
