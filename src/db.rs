@@ -41,7 +41,7 @@ impl <'a> DB<'a> {
             db: db,
         }
     }
-    async fn get_db_names(self) -> Option<Vec<String>> {
+    async fn get_db_names(&self) -> Option<Vec<String>> {
         let result: Vec<String>;
         for db_name in self.client.list_database_names(None, None).await {
             // println!("{}", db_name);
@@ -49,7 +49,7 @@ impl <'a> DB<'a> {
         }
         Some(result)
     }
-    fn read(self, collection_name: &str, docs: Document) -> Result<Vec<TornadoInOrOut>, mongodb::error::Error> {
+    async fn read(&self, collection_name: &str, docs: Document) -> Result<Vec<TornadoInOrOut>, mongodb::error::Error> {
         let result: Vec<TornadoInOrOut>;
         let collection = self.db.collection::<Event>(collection_name);
         let cursor = collection.find(doc! { "author": "George Orwell" }, None);
@@ -57,14 +57,13 @@ impl <'a> DB<'a> {
         //     println!("title: {}", cursor_result.title);
         //     result = result.push(cursor_result)
         // }
-        while let Some(book) = cursor.try_next().await? {
+        while let Some(book) = cursor.await?.try_next() {
+            while let Some(book) = cursor.try_next() {
             println!("title: {}", book.title);
         }
-        result = cursor.await?;
-        Ok(result)
-
+        cursor.await;
     }
-    async fn write(self, collection_name: &str, docs: Vec<TornadoInOrOut<'a>>) {
+    async fn <'a> write(&self, collection_name: &str, docs: Vec<TornadoInOrOut<'a>>) {
         // Get a handle to a collection in the database.
         let collection = self.db.collection::<Document>(collection_name);
 

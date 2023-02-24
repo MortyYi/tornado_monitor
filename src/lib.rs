@@ -1,11 +1,11 @@
-mod db;
-use db::DB;
+pub mod db;
+use crate::db;
 
 #[cfg(test)]
 mod tests {
     #[test]
     fn it_works() {
-        let database = DB.init();
+        let database = DB{};
         println!("i am happy!")
     }
 }

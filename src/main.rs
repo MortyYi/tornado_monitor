@@ -1,7 +1,6 @@
 mod monitor;
-mod db;
+pub mod db;
 
-pub use db::DB;
 use std::env;
 use std::time;
 use web3::{
